@@ -1,0 +1,38 @@
+#
+# アプリケーションのデプロイ
+#
+# サービス
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapl0
+spec:
+  selector:
+    app: web0
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
+  #type: LoadBalancer
+---
+## デプロイメント 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapl0
+spec:
+  replicas: 1
+  selector:           # これは deployment - pod 対応用
+    matchLabels:
+      app: web0
+  template:           # ここからポッド・テンプレート
+    metadata:
+      labels:
+        app: web0     # ポッドのラベル
+    spec:
+      containers:
+      - name: webapl0
+        image: maho/webapl0:1.1
+        imagePullPolicy: Always
+      imagePullSecrets:
+      - name: regcred

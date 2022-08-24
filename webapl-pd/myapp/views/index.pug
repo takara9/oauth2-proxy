@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1 #{title}
+  p Message #{message}
+  p Hostname #{hostname}
+  p IP Address #{ip}
+  p User ID #{userid}
+  p URL Host #{host}
+  p User Agent #{agent}
+  
+  h2 コンテナ環境変数
+  ul
+    each val, key in env
+      li= key + " = " + val
+
+  h2 クッキー
+  ul
+    each val, key in cookies
+      li= key + " = " + val
+
+  h2 HTTPヘッダー
+  ul
+    each val, key in headers
+      li= key + " = " + val

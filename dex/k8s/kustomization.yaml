@@ -1,0 +1,11 @@
+resources:
+- dex-ns.yaml
+- dex-github.yaml
+- dex-sa.yaml
+- dex-rbac.yaml
+- dex-secret.yaml
+- dex-cm-multi.yaml
+- dex-svc.yaml
+- dex-deploy.yaml
+
+

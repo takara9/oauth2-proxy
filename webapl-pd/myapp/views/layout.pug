@@ -1,0 +1,9 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    p <a class="button" href="//oauth2-proxy.labo.local:4443/oauth2/sign_out?rd=https://ingress.k8s1.labo.local/webapl0">logout</a>
+    p <a class="button" href="//oauth2-proxy.labo.local:4443/oauth2/userinfo">userinfo</a>
+    block content

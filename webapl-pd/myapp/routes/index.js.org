@@ -1,0 +1,75 @@
+var express = require('express');
+var router = express.Router();
+var os = require('os');
+var https = require('https');
+
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    var networkInterfaces = os.networkInterfaces();
+    var wk1 = req.headers['cookie'];
+    var wk2 = wk1.split(';');
+    var cookie = {};
+    for (i = 0; i < wk2.length; i++) {
+	var [k, v] = wk2[i].split('=');
+	cookie[k] = v
+    }
+
+    var options = {
+        hostname: 'oauth2-proxy.labo.local',
+        port: 4443,
+        path: '/oauth2/userinfo',
+        method: 'GET',
+        rejectUnauthorized: false,
+        requestCert: true,
+	headers: req.headers
+    };
+    // クッキーをセットする
+    //res2.setHeader('Set-Cookie', req.headers['cookie']);
+    
+    var req2 = https.request(options, res2 => {
+        console.log(`statusCode: ${res2.statusCode}`);
+        res2.on('data', d => {
+	    console.log(`data = ` + d);
+	    res.render('index', {
+		title: "POD問題判別用コンテナ",
+		hostname: process.env.HOSTNAME,
+		ip: networkInterfaces.eth0[0].cidr,	
+		host: req.headers.host,
+		agent: req.headers['user-agent'],
+		env: process.env,
+		headers: req.headers,
+		cookies: cookie
+	    });
+        });
+    });
+    req2.on('error', error => {
+	console.error(error);
+	res.render('index', {
+	    title: "POD問題判別用コンテナ",
+	    hostname: process.env.HOSTNAME,
+	    ip: networkInterfaces.eth0[0].cidr,	
+	    host: req.headers.host,
+	    agent: req.headers['user-agent'],
+	    env: process.env,
+	    headers: req.headers,
+	    cookies: cookie
+	});
+    });
+    req2.end();
+
+    /*
+    res.render('index', {
+	title: "POD問題判別用コンテナ",
+	hostname: process.env.HOSTNAME,
+	ip: networkInterfaces.eth0[0].cidr,	
+	host: req.headers.host,
+	agent: req.headers['user-agent'],
+	env: process.env,
+	headers: req.headers,
+	cookies: cookie
+    });
+    */
+});
+
+module.exports = router;
