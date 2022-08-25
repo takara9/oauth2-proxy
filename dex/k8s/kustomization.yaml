@@ -4,7 +4,7 @@ resources:
 - dex-sa.yaml
 - dex-rbac.yaml
 - dex-secret.yaml
-- dex-cm-multi.yaml
+- dex-config.yaml
 - dex-svc.yaml
 - dex-deploy.yaml
 
